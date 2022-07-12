@@ -1,0 +1,344 @@
+{%extends 'base.html'%}
+
+{%block head%}
+<link href="../static/CSS/main.css" rel="stylesheet">
+{%endblock%}
+
+{%block body%}
+<div class="container">
+    <div class="row">
+        <h1 class="g-col-12">Welcome to the Elliot preprocessing dataset tool!</h1>
+    </div>
+    <div class="row">
+        <p>There you can choose among 3 different loading strategies, 8 prefiltering approaches and several
+            splitting strategies</p>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form action="/api/v1/preprocessing" method="POST" enctype="multipart/form-data" id="form_data"
+                  class="main-form needs-validation">
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="loading_strategy"><h2>Select loading strategy:</h2></label>
+                            <select name="loading_strategy" id="loading_strategy" class="form-control" required>
+                                <option disabled selected value>--- select one ---</option>
+                                <option>dataset</option>
+                                <option>fixed</option>
+                                <option>hierarchy</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <h2>Select one or more prefiltering strategies</h2>
+                    </div>
+                    <div class="col-4">
+                        <h2>Select one test splitting strategy (required)</h2>
+                    </div>
+                    <div class="col-4">
+                        <h2>Select one validation splitting strategy (optional)</h2>
+                    </div>
+                </div>
+                <!-- prefiltering strategies -->
+                <div class="row">
+                    <div class="col-4">
+                        <button class="btn btn-success" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#prefiltering_block" id="prefiltering_button"
+                                >
+                            prefiltering strategies
+                        </button>
+                        <div class="form-group" id="prefiltering_block" hidden>
+                            <div class="form-check">
+                                <input type="checkbox" name="prefiltering_strategy" id="global_threshold"
+                                       value="global_threshold" class="form-check-input">global_threshold<br/>
+                                <input type="number" name="global_threshold_threshold" id="global_threshold_threshold"
+                                       placeholder="value of global threshold (es:3)" class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="prefiltering_strategy" id="user_average"
+                                       value="user_average" class="form-check-input">user_average
+                                (no further parametres needed)<br/>
+                                <!-- no paramteres needed for user_average -->
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="prefiltering_strategy" id="user_k_core" value="user_k_core"
+                                       class="form-check-input">user_k_core<br/>
+                                <input type="number" name="user_k_core_core" id="user_k_core_core"
+                                       placeholder="value of core for user_k_core (es:5)" class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="prefiltering_strategy" id="item_k_core" value="item_k_core"
+                                       class="form-check-input"
+                                >item_k_core<br/>
+                                <input type="number" name="item_k_core_core" id="item_k_core_core"
+                                       placeholder="value of core for item_k_core (es:5)" class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="prefiltering_strategy" id="iterative_k_core"
+                                       value="iterative_k_core" class="form-check-input">iterative_k_core<br/>
+                                <input type="number" name="iterative_k_core_core" id="iterative_k_core_core"
+                                       placeholder="value of core for iterative_k_core (es:5)"
+                                       class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="prefiltering_strategy" id="n_rounds_k_core"
+                                       value="n_rounds_k_core" class="form-check-input">n_rounds_k_core<br/>
+                                <input type="number" name="n_rounds_k_core_core" id="n_rounds_k_core_core"
+                                       placeholder="value of core for n_rounds_k_core (es:5)" class="form-control" hidden><br/>
+                                <input type="number" name="n_rounds_k_core_rounds" id="n_rounds_k_core_rounds"
+                                       placeholder="value of rounds for n_rounds_k_core (es:2)"
+                                       class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="prefiltering_strategy" id="cold_users" value="cold_users"
+                                       class="form-check-input"
+                                >cold_users<br/>
+                                <input type="number" name="cold_users_threshold" id="cold_users_threshold"
+                                       placeholder="value of threshold for cold_users (es:3)" class="form-control" hidden><br/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- test splitting strategies -->
+                    <div class="col-4">
+                        <button class="btn btn-success" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#test_splitting" id="test_splitting_button">
+                            prefiltering strategies
+                        </button>
+                        <div class="form-group" id="test_splitting" hidden>
+                            <div class="form-check">
+                                <input type="radio" name="test_splitting_strategy" id="test_fixed_timestamp"
+                                       value="fixed_timestamp" class="form-check-input">fixed_timestamp<br/>
+                                <input type="text" name="test_fixed_timestamp_value"
+                                       id="test_fixed_timestamp_value" placeholder="input timestamp in UNIX format"
+                                       class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="test_splitting_strategy" id="test_temporal_hold_out"
+                                       value="temporal_hold_out"
+                                       class="form-check-input">temporal_hold_out<br/>
+                                <input type="number" step="0.01" name="test_temporal_hold_out_test_ratio"
+                                       id="test_temporal_hold_out_test_ratio"
+                                       placeholder="test ratio(Do not compile if already input a leave n out) input a value for the test ratio"
+                                       class="form-control" hidden><br/>
+                                <input type="number" name="test_temporal_hold_out_test_leave_n_out"
+                                       id="test_temporal_hold_out_leave_n_out"
+                                       placeholder=" leave out n(Do not compile if already input a test ratio)input a value for the leave n out"
+                                       class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="test_splitting_strategy" id="test_random_subsampling"
+                                       value="random_subsampling" class="form-check-input"
+                                >random_subsampling<br/>
+                                <input type="number" step="0.01" name="test_random_subsampling_test_ratio"
+                                       id="test_random_subsampling_test_ratio"
+                                       placeholder="input a value for the random subsampling test ratio"
+                                       class="form-control" hidden><br/>
+                                <input type="number" name="test_random_subsampling_leave_n_out"
+                                       id="test_random_subsampling_leave_n_out"
+                                       placeholder="input a value for the random subsampling leave n out"
+                                       class="form-control" hidden><br/>
+                                <input type="number" name="test_random_subsampling_folds"
+                                       id="test_random_subsampling_folds"
+                                       placeholder="input a value for the folds" class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="test_splitting_strategy" id="test_random_cross_validation"
+                                       value="random_cross_validation"
+                                       class="form-check-input">random_cross_validation<br/>
+                                <input type="number" name="test_random_cross_validation_folds"
+                                       id="test_random_cross_validation_folds"
+                                       placeholder="input a value for the folds" class="form-control" hidden><br/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- validation splitting strategies -->
+                    <!-- aggiungere che per 2 strategie il secondo valore verrà ignorato se già abbiamo inserito il primo -->
+                    <div class="col-4">
+                        <button class="btn btn-success" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#validation_splitting" id="validation_splitting_button">
+                            prefiltering strategies
+                        </button>
+                        <div class="form-group" id="validation_splitting" hidden>
+                            <div class="form-check">
+                                <input type="radio" name="validation_splitting_strategy" id="validation_fixed_timestamp"
+                                       value="fixed_timestamp" class="form-check-input">fixed_timestamp<br/>
+                                <input type="text" name="validation_fixed_timestamp_value"
+                                       id="validation_fixed_timestamp_value"
+                                       placeholder="input timestamp in UNIX format" class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="validation_splitting_strategy"
+                                       id="validation_temporal_hold_out"
+                                       value="temporal_hold_out" class="form-check-input">temporal_hold_out<br/>
+                                <input type="number" step="0.01" name="validation_temporal_hold_out_test_ratio"
+                                       id="validation_temporal_hold_out_test_ratio"
+                                       placeholder="test ratio (Do not compile if already input a leave n out) input a value for the test ratio"
+                                       class="form-control" hidden><br/>
+                                <input type="number" name="validation_temporal_hold_out_test_leave_n_out"
+                                       id="validation_temporal_hold_out_leave_n_out"
+                                       placeholder="leave n out (Do not compile if already input a test ratio)input a value for the leave n out"
+                                       class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="validation_splitting_strategy"
+                                       id="validation_random_subsampling"
+                                       value="random_subsampling" class="form-check-input">random_subsampling<br/>
+                                <input type="number" step="0.01" name="validation_random_subsampling_test_ratio"
+                                       id="validation_random_subsampling_test_ratio"
+                                       placeholder="input a value for the random subsampling test ratio"
+                                       class="form-control" hidden><br/>
+                                <input type="number" name="validation_random_subsampling_leave_n_out"
+                                       id="validation_random_subsampling_leave_n_out"
+                                       placeholder="input a value for the random subsampling leave n out"
+                                       class="form-control" hidden><br/>
+                                <input type="number" name="validation_random_subsampling_folds"
+                                       id="validation_random_subsampling_folds"
+                                       placeholder="input a value for the folds" class="form-control" hidden><br/>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="validation_splitting_strategy"
+                                       id="validation_random_cross_validation"
+                                       value="random_cross_validation"
+                                       class="form-check-input">random_cross_validation<br/>
+                                <input type="number" name="validation_random_cross_validation_folds"
+                                       id="validation_random_cross_validation_folds"
+                                       placeholder="input a value for the folds" class="form-control" hidden><br/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+
+                            <legend><h2>Random seed of the experiment:</h2></legend>
+                            <label for="random_seed">Select a seed for this experiment</label>
+                            <input type="number" name="random_seed" id="random_seed" value="42" class="form-control">
+
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <legend><h2>Choose if you want to binarize the dataset</h2></legend>
+                            <input type="checkbox" name="binarize" id="binarize" value="True" class="form-check-input">
+                            <label for="binarize">Check if you want to binarize the dataset</label>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- input file per la dataset strategy -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <legend><h2>Dataset strategy</h2></legend>
+                            <div class="mb-3">
+                                <label for="dataset" class="form-label">Input dataset in <strong>tsv</strong> format (if
+                                    chosen dataset
+                                    strategy)</label>
+                                <input type="file" name="dataset_file" id="dataset"
+                                       class="form-control"><br/>
+
+                            </div>
+                            <input type="submit" value="Pre-process with dataset strategy" id="dataset_button"
+                                   class="btn btn-outline-primary">
+                        </div>
+                    </div>
+                </div>
+                <!-- input file per la fixed strategy -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <legend><h2>Input train/[validation]/test dataset for fixed strategy</h2></legend>
+                            <div class="mb-3">
+
+                                <label for="train_file" class="form-label">Input train dataset in <strong>tsv</strong>
+                                    format (if chosen fixed
+                                    strategy)</label>
+                                <input type="file" name="train_file" id="train_file" class="form-control"><br/>
+                                <label for="validation_file" class="form-label">Input validation dataset in
+                                    <strong>tsv</strong> format (if
+                                    chosen
+                                    fixed strategy)(optional)</label>
+                                <input type="file" name="validation_file" id="validation_file"
+                                       class="form-control"><br/>
+                                <label for="test_file" class="form-label">Input test dataset in <strong>tsv</strong>
+                                    format
+                                    (if chosen fixed
+                                    strategy)</label>
+                                <input type="file" name="test_file" id="test_file" class="form-control"><br/>
+                            </div>
+                            <input type="submit" value="Pre-process with fixed strategy"
+                                   class="btn btn-outline-primary" id="fixed_button">
+                        </div>
+                    </div>
+                </div>
+                <!-- input file per la hierarchy strategy -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <legend><h2>Input files of a root folder (in .zip) for a hierarchy strategy</h2></legend>
+
+                            <div class="mb-3">
+
+                                <label for="dataset_folder" class="form-label">Input root folder in <strong>zip</strong>
+                                    format (if chosen
+                                    dataset
+                                    strategy)</label>
+                                <input type="file" name="dataset_folder" id="dataset_folder"
+                                       class="form-control col-2"><br/>
+                            </div>
+
+                            <input type="submit" value="Pre-process with hierarchy strategy" id="hierarchy_button"
+                                   class="btn btn-outline-primary">
+                        </div>
+                    </div>
+                </div>
+                <div class="row reset">
+                    <div class="col-12">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <input type="reset" value="Reset input parametres" class="btn btn-outline-danger">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    let form = document.querySelector('.needs-validation');
+
+    form.addEventListener('submit', function(event){
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+            })
+</script>
+<script src="../static/script/main.js"></script>
+<!--script src="../static/script/prefiltering_script.js"></script-->
+<!--script src="../static/script/test_splitting_script.js"></script-->
+<!--script src="../static/script/validation_splitting_script.js"></script-->
+<!-- <script>
+    const preprocessButton = document.getElementById('dataset_button');
+    const form = document.getElementById('form_data');
+    preprocessButton.addEventListener('submit', e => {
+        e.preventDefault();
+        fetch('/api/v1/preprocessing', {
+            method: 'POST',
+            headers: new Headers({
+                'Content-Type': 'multipart/form-data'
+            }),
+            body: new FormData(form)
+        });
+    })
+    .then(res => res.json())
+    .then(data => );
+</script> -->
+{%endblock%}
