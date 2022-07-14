@@ -2,7 +2,6 @@
 
 # Press Maiusc+F10 to execute it or replace it with your code.
 # __variabile__ indica il nome del modulo dove viene chiamata una funzione nel nostro caso l'app
-import csv
 
 from flask import Flask, render_template, \
     request, jsonify, \

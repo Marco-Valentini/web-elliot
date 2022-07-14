@@ -8,14 +8,11 @@ __author__ = 'Vito Walter Anelli, Claudio Pomo'
 __email__ = 'vitowalter.anelli@poliba.it, claudio.pomo@poliba.it'
 
 import importlib
-import sys
 from os import path
 
 import numpy as np
 
 from elliot.namespace.namespace_model_builder import NameSpaceBuilder
-from elliot.result_handler.result_handler import ResultHandler, HyperParameterStudy, StatTest
-from elliot.utils import logging as logging_project
 
 _rstate = np.random.RandomState(42)
 here = path.abspath(path.dirname(__file__))

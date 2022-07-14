@@ -6,22 +6,35 @@
     <meta lang="en">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <title>Preprocessing Elliot</title>
-    <link href="../static/CSS/main.css" rel="stylesheet">
+    <title>Web Elliot</title>
+    <link href="../static/css/main.css" rel="stylesheet">
     <script src="../static/script/jquery-3.6.0.min.js"></script>
     {% block head %}{% endblock %}
 </head>
 <body>
-{%block body%}
-<div class="row gy-2">
-    <footer>
-        <p>Contatta gli sviluppatori a <a href="mailto:m.valentini7@studenti.it"
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <span class="fs-4">Web Elliot</span>
+      </a>
+
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Data preprocessing</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">Recommendation</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">Evaluation</a></li>
+      </ul>
+    </header>
+  </div>
+<div class="b-example-divider"></div>
+{%block body%}{%endblock%}
+    <footer class="position-absolute bottom-0 w-100 bg-light">
+        <div class="text-muted">
+        <p class="py-3">Contatta gli sviluppatori a <a href="mailto:m.valentini7@studenti.it"
                                           title="m.valentini7@studenti.poliba.it">Marco Valentini</a> per suggerimenti e
-            modifiche</p>
-        <p>(c) copyright - Sisinflab Politecnico di Bari</p>
+            modifiche<br>
+        © SisInfLab – Politecnico di Bari</p>
+            </div>
     </footer>
-</div>
-{%endblock%}
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
         integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
         crossorigin="anonymous"></script>

@@ -7,19 +7,9 @@ __version__ = '0.3.1'
 __author__ = 'Vito Walter Anelli, Claudio Pomo'
 __email__ = 'vitowalter.anelli@poliba.it, claudio.pomo@poliba.it'
 
-import copy
 import os
 import re
-from ast import literal_eval
-from collections import OrderedDict
-from functools import reduce
-from os.path import isfile, join
 from types import SimpleNamespace
-
-from hyperopt import hp
-from yaml import FullLoader as FullLoader
-from yaml import load
-
 
 
 regexp = re.compile(r'[\D][\w-]+\.[\w-]+')
