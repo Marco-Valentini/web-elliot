@@ -7,7 +7,7 @@ from flask import Flask, render_template, \
     request, jsonify, \
     send_file  # import delle funzionalità di flask, render_template serve ad effettuare il rendering di pagine web
 from controllers.create_config_dict import create_config_dict
-from run_marco import run_experiment
+from controllers.run_marco import run_experiment
 import shutil
 
 app = Flask(

@@ -142,12 +142,12 @@ def create_config_dict(request):
                     'test_random_subsampling_leave_n_out', None))
             if request.form.get('test_random_subsampling_folds'):
                 config['experiment']['splitting']['test_splitting']['folds'] = int(request.form.get(
-                    'test_random_subsampling_folds', None))
+                    'test_random_subsampling_folds', 1))
 
         elif request.form.get('test_splitting_strategy') == 'random_cross_validation':
             print('Selected a random cross validation test splitting strategy ')
             config['experiment']['splitting']['test_splitting']['folds'] = int(request.form.get(
-                'test_random_cross_validation_folds', None))
+                'test_random_cross_validation_folds', 1))
 
     # gestione validation data splitting
 
@@ -177,11 +177,11 @@ def create_config_dict(request):
                 config['experiment']['splitting']['validation_splitting']['leave_n_out'] = int(request.form.get(
                     'validation_random_subsampling_leave_n_out', None))
             config['experiment']['splitting']['validation_splitting']['folds'] = int(request.form.get(
-                'validation_random_subsampling_folds', None))
+                'validation_random_subsampling_folds', 1))
         elif request.form.get('validation_splitting_strategy') == 'random_cross_validation':
             print('Selected a random cross validation splitting strategy ')
             config['experiment']['splitting']['validation_splitting']['folds'] = int(request.form.get(
-                'validation_random_cross_validation_folds', None))
+                'validation_random_cross_validation_folds', 1))
 
     # gestione salvataggio dati splittati (scegliamo lato backend di salvarli, non sceglie l'utente)
     save_folder = 'splitted_data/' + cript.hexdigest()
