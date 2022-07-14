@@ -20,7 +20,7 @@ const validation_random_subsampling_radio = document.getElementById('validation_
 const validation_random_cross_validation_radio = document.getElementById('validation_random_cross_validation');
 
 //gestione degli input dei files
-const dataset_file =document.getElementById('dataset');
+const dataset_file =document.getElementById('dataset_file');
 const train_file =document.getElementById('train_file');
 const validation_file =document.getElementById('validation_file');
 const test_file =document.getElementById('test_file');
@@ -36,26 +36,30 @@ const hierarchy_button = document.getElementById('hierarchy_button');
 const prefiltering_button = document.getElementById('prefiltering_button');
 const prefiltering_block = document.getElementById('prefiltering_block');
 
-prefiltering_button.addEventListener('click',() => {
-prefiltering_block.hidden = false})
+/*prefiltering_button.addEventListener('click',() => {
+prefiltering_block.hidden = false}) */
 
-const test_splitting_button = document.getElementById('test_splitting_button');
-const test_splitting = document.getElementById('test_splitting');
 
-test_splitting_button.addEventListener('click',() => {
-test_splitting.hidden = false})
 
 const validation_splitting_button = document.getElementById('validation_splitting_button');
 const validation_splitting = document.getElementById('validation_splitting');
 
-validation_splitting_button.addEventListener('click',() => {
-validation_splitting.hidden = false})
+/* validation_splitting_button.addEventListener('click',() => {
+validation_splitting.hidden = false}) */
+
+//let form = document.querySelector('.needs-validation');
 
 //gestione strategie di caricamento
 select.addEventListener('change', (event) => {
 event.preventDefault();
 
 if (select.value === 'dataset') {
+    document.getElementById('fixed').hidden = true;
+    document.getElementById('dataset').hidden = false;
+    document.getElementById('hierarchy').hidden = true;
+    document.getElementById('prefiltering').hidden = false;
+    document.getElementById('test_splitting').hidden = false;
+    document.getElementById('validation_splitting').hidden = false;
     test_fixed_timestamp_radio.required = true;
     test_temporal_hold_out_radio.required = true;
     test_random_subsampling_radio.required = true;
@@ -88,6 +92,12 @@ if (select.value === 'dataset') {
 }
 
 if (select.value === 'fixed') {
+    document.getElementById('fixed').hidden = false;
+    document.getElementById('dataset').hidden = true;
+    document.getElementById('hierarchy').hidden = true;
+    document.getElementById('prefiltering').hidden = true;
+    document.getElementById('test_splitting').hidden = true;
+    document.getElementById('validation_splitting').hidden = true;
     dataset_file.disabled = true;
     dataset_button.disabled = true;
     train_file.disabled = false;
@@ -120,6 +130,12 @@ if (select.value === 'fixed') {
 
 if (select.value === 'hierarchy') {
 
+    document.getElementById('fixed').hidden = true;
+    document.getElementById('dataset').hidden = true;
+    document.getElementById('hierarchy').hidden = false;
+    document.getElementById('prefiltering').hidden = true;
+    document.getElementById('test_splitting').hidden = true;
+    document.getElementById('validation_splitting').hidden = true;
     dataset_file.disabled = true;
     dataset_button.disabled = true;
     train_file.disabled = true;
@@ -149,6 +165,7 @@ if (select.value === 'hierarchy') {
     validation_random_cross_validation_radio.disabled = true;
 }
 })
+
 
 //gestione delle checkbox
 /*const global_threshold_check = document.getElementById('global_threshold');

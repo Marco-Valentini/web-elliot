@@ -64,7 +64,7 @@ def create_config_dict(request):
 
     # gestione prefiltering
     # prefiltering_strategies = dict() //non dovrebbe servire più, se dà errori rimetterlo
-    prefiltering_strategies = {k: v for k, v in request.form.lists()}['prefiltering_strategy']
+    prefiltering_strategies = {k: v for k, v in request.form.lists()}.get('prefiltering_strategy', None)
 
     config['experiment']['prefiltering'] = []
     # è una lista di dizionari, creaimo un nuovo dizionario e lo aggiungiamo in coda alla lista (usa metodo append)

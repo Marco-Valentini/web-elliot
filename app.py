@@ -5,7 +5,7 @@
 import csv
 
 from flask import Flask, render_template, \
-    request, \
+    request, jsonify, \
     send_file  # import delle funzionalità di flask, render_template serve ad effettuare il rendering di pagine web
 from Controllers.create_config_dict import create_config_dict
 from run_marco import run_experiment
@@ -41,6 +41,19 @@ def preprocess():
             config)  # grazie al dizionario costruirò un namespace che darò al run per ottenere il dataset preprocessato in cambio
         request_no = config['experiment']['splitting']['save_folder'].split('splitted_data/')[1]
         return render_template("results.html", config=config, PP=request_no)
+
+
+@app.route("/api/v1/preprocessing-json", methods=['GET', 'POST'])
+def preprocess_json():
+    # request deve essere passato ad una funzione che generi un dizionario contenente le informazioni che ci servono
+    if request.method == 'POST':
+        print("received a preprocessing request!")
+        print("trying to create a dataframe with pandas ")
+        config = create_config_dict(request)  # creo dizionario di configurazione da cui creare un namespace
+        preprocessed_dataset = run_experiment(
+            config)  # grazie al dizionario costruirò un namespace che darò al run per ottenere il dataset preprocessato in cambio
+        request_no = config['experiment']['splitting']['save_folder'].split('splitted_data/')[1]
+        return jsonify(request_no)
 
 
 @app.route('/api/v1/preprocessing/download/<request_no>', methods=['GET'])
