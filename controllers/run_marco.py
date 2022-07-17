@@ -15,7 +15,7 @@ import numpy as np
 from elliot.namespace.namespace_model_builder import NameSpaceBuilder
 
 _rstate = np.random.RandomState(42)
-here = path.abspath(path.dirname(__file__))
+here = path.abspath(path.dirname(__file__) + '/../')
 
 print(u'''
 __/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\___/\\\\\\\\\\\\______/\\\\\\\\\\\\_________________________________________        
