@@ -7,7 +7,7 @@ html {
   min-height: 100%;
 }
 body {
-  margin-bottom: 80px; /* Margin bottom by footer height */
+  margin-bottom: 60px; /* Margin bottom by footer height */
 }
 input{
 margin-top: 5px;
@@ -15,5 +15,8 @@ margin-bottom: 5px;
 }
 footer{
 text-align : center;
-    height: 80px;
+    height: 60px;
+}
+.copyright{
+    padding-bottom:10px;
 }
