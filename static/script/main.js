@@ -1,3 +1,4 @@
+//TODO dividere gli script nei vari moduli e gestire l'ambito delle variabili
 //prendo oggetto della select
 const select = document.getElementById('loading_strategy');
 //gestione checkbox del prefiltering

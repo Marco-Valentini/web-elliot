@@ -33,7 +33,7 @@ print(f'Version Number: {__version__}')
 
 def run_experiment(config_dict):
 
-    builder = NameSpaceBuilder(config_dict, here, here) #risolto mettendo here come path del config_path
+    builder = NameSpaceBuilder(config_dict, here, here) #modifica rispetto alla versione tradizionale di elliot
     base = builder.base
 
     dataloader_class = getattr(importlib.import_module("elliot.dataset"),

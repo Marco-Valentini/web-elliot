@@ -25,15 +25,17 @@ def homepage():
 
 @app.route("/contatti")  # decoratore che specifica quale percorso poi richiama la def contatti
 def contatti():
-    # mettere qualche cacata di contatto
+    # TODO mettere redirect a pagina di contatto per eventuali contatti a sviluppatori
     return "Contattaci!"
 
 
+# API usata per il preprocessing del dataset con una richiesta sincrona
+# TODO implementare selezione da frontend tra richiesta sincrona/asincrona a seconda delle necessit dell'utente
 @app.route("/api/v1/preprocessing", methods=['GET', 'POST'])
 def preprocess():
     # request deve essere passato ad una funzione che generi un dizionario contenente le informazioni che ci servono
     if request.method == 'POST':
-        print("received a preprocessing request!")
+        print("received a preprocessing request!")  # debug string
         print("trying to create a dataframe with pandas ")
         config = create_config_dict(request)  # creo dizionario di configurazione da cui creare un namespace
         preprocessed_dataset = run_experiment(
@@ -42,6 +44,7 @@ def preprocess():
         return render_template("results.html", config=config, PP=request_no)
 
 
+# API usato per effettuare il preprocessing con una richiesta asincrona
 @app.route("/api/v1/preprocessing-json", methods=['GET', 'POST'])
 def preprocess_json():
     # request deve essere passato ad una funzione che generi un dizionario contenente le informazioni che ci servono
@@ -55,6 +58,7 @@ def preprocess_json():
         return jsonify(request_no)
 
 
+# API per scaricare il dataset preprocessato
 @app.route('/api/v1/preprocessing/download/<request_no>', methods=['GET'])
 def send_results(request_no):
     print('received a request of download')
@@ -69,5 +73,4 @@ def send_results(request_no):
 if __name__ == "__main__":
     app.run(debug=True)
 
-# serve una variabile d'ambiente per dire che si vuole utilizzare questa applicazione app così realizzata
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

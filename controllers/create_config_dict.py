@@ -5,7 +5,9 @@ import hashlib  # se proprio dopo vogliamo farla con hash il nome del dataset
 from flask import Flask, request
 import zipfile  # per gestire lo zip inviato nella strategia hierarchy
 
-
+# questa funzione viene utilizzata per creare un dizionario di configurazione a partire dall'oggetto richiesta proveniente dal client
+#TODO sistemare il bug con il fixed timestamp
+#TODO sistemare il bug nel temporal hold out
 def create_config_dict(request):
     config = dict()
     config['experiment'] = dict()
